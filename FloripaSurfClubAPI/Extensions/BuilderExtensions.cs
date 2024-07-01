@@ -1,12 +1,10 @@
-﻿using FloripaSurfClubAPI.Endpoints;
-using FloripaSurfClubAPI.Endpoints.Professores;
+﻿using FloripaSurfClubAPI.Handlers;
 using FloripaSurfClubAPI.Models;
 using FloripaSurfClubCore;
 using FloripaSurfClubCore.Data;
+using FloripaSurfClubCore.Handlers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using System;
 
 namespace FloripaSurfClubAPI.Extensions
 {
@@ -68,8 +66,10 @@ namespace FloripaSurfClubAPI.Extensions
 
         public static void AddServices(this WebApplicationBuilder builder)
         {
-            builder.Services.AddScoped<ProfessoresEndpoints>();
-            builder.Services.AddScoped<UsuarioEndpoints>();
+            builder.Services.AddScoped<IAulasHandler, AulaHandler>();
+            builder.Services.AddScoped<IProfessorHandler, ProfessorHandler>();
+            builder.Services.AddScoped<IClienteHandler, ClienteHandler>();
+            builder.Services.AddScoped<IAccountHandler, AccountHandler>();
         }
     }
 

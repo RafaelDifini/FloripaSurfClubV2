@@ -1,4 +1,4 @@
-﻿using FloripaSurfClubCore.Enums;
+﻿ using FloripaSurfClubCore.Enums;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace FloripaSurfClubCore.Requests.Account
 {
-    public class RegistrarRequest : Request
+    public class RegistrarRequest 
     {
         public string Nome { get; set; }
         public string Email { get; set; }

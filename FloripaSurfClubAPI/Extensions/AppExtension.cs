@@ -1,7 +1,4 @@
-﻿using FloripaSurfClubAPI.Endpoints;
-using FloripaSurfClubAPI.Endpoints.Professores;
-using System.Runtime.CompilerServices;
-
+﻿
 namespace FloripaSurfClubAPI.Extensions
 {
     public static class AppExtension
@@ -16,10 +13,10 @@ namespace FloripaSurfClubAPI.Extensions
             });
         }
 
-        public static void MapEndpoinst(this WebApplication app)
+        public static void UseSecurity(this WebApplication app)
         {
-            ProfessoresEndpoints.MapProfessorEndpoints(app);
-            UsuarioEndpoints.MapUsuarioEndpoints(app);
+            app.UseAuthentication();
+            app.UseAuthorization();
         }
     }
 }

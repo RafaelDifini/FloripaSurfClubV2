@@ -1,18 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using FloripaSurfClubCore.Models;
-using Microsoft.Extensions.Configuration;
-using System.IO;
 using Microsoft.AspNetCore.Identity;
-using System.Collections.Generic;
-using System.Reflection.Emit;
-using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using FloripaSurfClubAPI.Models;
 using Microsoft.EntityFrameworkCore.Design;
 
 namespace FloripaSurfClubCore.Data
 {
-    public class FloripaSurfClubContextV2 : IdentityDbContext<UsuarioSistema, IdentityRole<Guid>, Guid> 
+    public class FloripaSurfClubContextV2 : IdentityDbContext<UsuarioSistema, IdentityRole<Guid>, Guid> , IDesignTimeDbContextFactory<FloripaSurfClubContextV2>
     {
         internal FloripaSurfClubContextV2() { }
 
@@ -71,21 +66,24 @@ namespace FloripaSurfClubCore.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (!optionsBuilder.IsConfigured)
-            {
-                var basePath = Directory.GetCurrentDirectory();
-                var configuration = new ConfigurationBuilder()
-                    .SetBasePath(basePath)
-                    .AddJsonFile("appsettings.json", optional: false)
-                    .Build();
-
-                var connectionString = configuration.GetConnectionString("DefaultConnection");
-                optionsBuilder.UseNpgsql(connectionString);
-
-                AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
-            }
-
             base.OnConfiguring(optionsBuilder);
+        }
+
+        public FloripaSurfClubContextV2 CreateDbContext(string[] args)
+        {
+            var basePath = Directory.GetCurrentDirectory();
+            var configuration = new ConfigurationBuilder()
+                .SetBasePath(basePath)
+                .AddJsonFile("appsettings.json")
+                .Build();
+
+            var optionsBuilder = new DbContextOptionsBuilder<FloripaSurfClubContextV2>();
+            var connectionString = configuration.GetConnectionString("DefaultConnection");
+            optionsBuilder.UseNpgsql(connectionString);
+
+            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
+            return new FloripaSurfClubContextV2(optionsBuilder.Options);
         }
     }
 }

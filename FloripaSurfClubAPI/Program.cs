@@ -1,3 +1,5 @@
+using FloripaSurfClubAPI;
+using FloripaSurfClubAPI.Endpoints;
 using FloripaSurfClubAPI.Extensions;
 using FloripaSurfClubAPI.Models;
 using FloripaSurfClubCore.Data;
@@ -14,6 +16,7 @@ builder.AddServices();
 
 var app = builder.Build();
 
-app.MapEndpoinst();
+app.UseCors(ApiConfiguration.CorsPolicyName);
 app.ConfigureDevEnvironment();
+app.MapEndpoints();
 app.Run();

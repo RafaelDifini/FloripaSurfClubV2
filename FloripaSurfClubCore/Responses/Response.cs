@@ -9,7 +9,7 @@ namespace FloripaSurfClubCore.Responses
 {
     public class Response<TData>
     {
-        private readonly int _code;
+        public int _code;
 
         [JsonConstructor]
         public Response()
