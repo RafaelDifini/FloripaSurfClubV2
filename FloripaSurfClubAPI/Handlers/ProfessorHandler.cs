@@ -46,7 +46,7 @@ namespace FloripaSurfClubAPI.Handlers
             try
             {
                 var professor = await _context.Professores
-                    .FirstOrDefaultAsync(x => x.Id == request.Id);
+                    .FirstOrDefaultAsync(x => x.UsuarioSistemaId == request.UsuarioSistemaId);
 
                 if (professor is null)
                     return new Response<Professor?>(null, 404, "Professor não encontrado");
@@ -70,7 +70,7 @@ namespace FloripaSurfClubAPI.Handlers
             try
             {
                 var professor = await _context.Professores
-                    .FirstOrDefaultAsync(x => x.Id == request.Id);
+                    .FirstOrDefaultAsync(x => x.UsuarioSistemaId == request.UsuarioSistemaId);
 
                 if (professor is null)
                     return new Response<Professor?>(null, 404, "Professor não encontrado");
@@ -92,7 +92,7 @@ namespace FloripaSurfClubAPI.Handlers
             {
                 var professor = await _context.Professores
                     .AsNoTracking()
-                    .FirstOrDefaultAsync(x => x.Id == request.Id);
+                    .FirstOrDefaultAsync(x => x.UsuarioSistemaId == request.UsuarioSistemaId);
 
                 return professor is null
                     ? new Response<Professor?>(null, 404, "Professor não encontrado")
@@ -118,6 +118,19 @@ namespace FloripaSurfClubAPI.Handlers
             {
                 return new Response<List<Professor>>(null, 500, $"Não foi possível recuperar os professores: {ex.Message}");
             }
+        }
+
+        private async Task<bool> EstaDisponivel(Guid professorId, DateTime dataHora)
+        {
+            var aulaExistente = await _context.Aulas
+                .AnyAsync(a => a.ProfessorId == professorId &&
+                               a.DataInicio.Year == dataHora.Year &&
+                               a.DataInicio.Month == dataHora.Month &&
+                               a.DataInicio.Day == dataHora.Day &&
+                               a.DataInicio.Hour == dataHora.Hour &&
+                               a.DataInicio.Minute == dataHora.Minute);
+
+            return !aulaExistente;
         }
     }
 }

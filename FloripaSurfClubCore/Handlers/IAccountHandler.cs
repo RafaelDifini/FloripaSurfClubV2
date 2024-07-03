@@ -1,4 +1,5 @@
-﻿using FloripaSurfClubCore.Requests.Account;
+﻿using FloripaSurfClubCore.Enums;
+using FloripaSurfClubCore.Requests.Account;
 using FloripaSurfClubCore.Responses;
 using System;
 using System.Collections.Generic;

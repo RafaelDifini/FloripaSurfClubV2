@@ -13,6 +13,7 @@ builder.AddDataContexts();
 builder.AddCrossOrigin();
 builder.AddDocumentation();
 builder.AddServices();
+builder.AddSecrets();
 
 var app = builder.Build();
 

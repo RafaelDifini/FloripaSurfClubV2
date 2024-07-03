@@ -12,8 +12,8 @@ namespace FloripaSurfClubAPI.Endpoints.Clientes
         public static void Map(IEndpointRouteBuilder app)
             => app.MapGet("/{id}", HandleAsync)
                 .WithName("GetClienteById")
-                .WithSummary("Gets a client by ID")
-                .WithDescription("Gets a client by ID")
+                .WithSummary("Obtém um cliente pelo ID")
+                .WithDescription("Obtém um cliente pelo ID")
                 .Produces<Response<Cliente>>(StatusCodes.Status200OK)
                 .Produces(StatusCodes.Status404NotFound)
                 .Produces(StatusCodes.Status500InternalServerError);

@@ -10,19 +10,19 @@ namespace FloripaSurfClubAPI.Endpoints.Professores
     public class DeleteProfessorEndpoint : IEndpoint
     {
         public static void Map(IEndpointRouteBuilder app)
-            => app.MapDelete("/{id}", HandleAsync)
+            => app.MapDelete("/{usuarioSistemaId}", HandleAsync)
                 .WithName("DeleteProfessor")
-                .WithSummary("Deletes an existing professor")
-                .WithDescription("Deletes an existing professor")
+                .WithSummary("Deleta um professor existente")
+                .WithDescription("Deleta um professor existente")
                 .Produces(StatusCodes.Status200OK)
                 .Produces(StatusCodes.Status404NotFound)
                 .Produces(StatusCodes.Status500InternalServerError);
 
         private static async Task<IResult> HandleAsync(
             [FromServices] IProfessorHandler handler,
-            [FromRoute] Guid id)
+            [FromRoute] Guid usuarioSistemaId)
         {
-            var request = new DeleteProfessorRequest { Id = id };
+            var request = new DeleteProfessorRequest { UsuarioSistemaId = usuarioSistemaId };
             var response = await handler.DeleteAsync(request);
             return response.IsSuccess
                 ? TypedResults.Ok(response)

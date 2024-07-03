@@ -12,8 +12,8 @@ namespace FloripaSurfClubAPI.Endpoints.Aulas
         public static void Map(IEndpointRouteBuilder app)
             => app.MapGet("/{id}", HandleAsync)
                 .WithName("GetAulaById")
-                .WithSummary("Gets a class by ID")
-                .WithDescription("Gets a class by ID")
+                .WithSummary("Obtém uma aula pelo ID")
+                .WithDescription("Obtém uma aula pelo ID")
                 .Produces<Response<Aula>>(StatusCodes.Status200OK)
                 .Produces(StatusCodes.Status404NotFound)
                 .Produces(StatusCodes.Status500InternalServerError);
@@ -25,7 +25,7 @@ namespace FloripaSurfClubAPI.Endpoints.Aulas
             var request = new GetAulaByIdRequest { Id = id };
             var response = await handler.GetByIdAsync(request);
             return response.IsSuccess
-                ? TypedResults.Ok(response)
+                ? TypedResults.Ok(new { response.Data.Id, response.Data.ProfessorId, response.Message })
                 : Results.Problem(response.Message, statusCode: 500);
         }
     }

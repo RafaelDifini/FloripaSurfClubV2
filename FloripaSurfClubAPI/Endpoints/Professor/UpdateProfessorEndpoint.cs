@@ -10,20 +10,20 @@ namespace FloripaSurfClubAPI.Endpoints.Professores
     public class UpdateProfessorEndpoint : IEndpoint
     {
         public static void Map(IEndpointRouteBuilder app)
-            => app.MapPut("/{id}", HandleAsync)
+            => app.MapPut("/{usuarioSistemaId}", HandleAsync)
                 .WithName("UpdateProfessor")
-                .WithSummary("Updates an existing professor")
-                .WithDescription("Updates an existing professor")
+                .WithSummary("Atualiza um professor existente")
+                .WithDescription("Atualiza as informaçoes de um professor existente")
                 .Produces<Response<Professor>>(StatusCodes.Status200OK)
                 .Produces(StatusCodes.Status404NotFound)
                 .Produces(StatusCodes.Status500InternalServerError);
 
         private static async Task<IResult> HandleAsync(
             [FromServices] IProfessorHandler handler,
-            [FromRoute] Guid id,
+            [FromRoute] Guid usuarioSistemaId,
             [FromBody] UpdateProfessorRequest request)
         {
-            request.Id = id;
+            request.UsuarioSistemaId = usuarioSistemaId;
             var response = await handler.UpdateAsync(request);
             return response.IsSuccess
                 ? TypedResults.Ok(response)

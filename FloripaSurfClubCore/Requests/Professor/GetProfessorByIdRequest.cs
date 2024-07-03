@@ -2,8 +2,7 @@
 
 namespace FloripaSurfClubCore.Requests.Professor
 {
-    public class GetProfessorByIdRequest 
+    public class GetProfessorByIdRequest  : Request
     {
-        public Guid Id { get; set; }
     }
 }

@@ -1,5 +1,8 @@
 ﻿using FloripaSurfClubAPI.Endpoints.Account;
+using FloripaSurfClubAPI.Endpoints.Alunos;
+using FloripaSurfClubAPI.Endpoints.Atendente;
 using FloripaSurfClubAPI.Endpoints.Aulas;
+using FloripaSurfClubAPI.Endpoints.Caixa;
 using FloripaSurfClubAPI.Endpoints.Clientes;
 using FloripaSurfClubAPI.Endpoints.Professores;
 using Microsoft.AspNetCore.Builder;
@@ -40,11 +43,32 @@ namespace FloripaSurfClubAPI.Extensions
 
             endpoints.MapGroup("/v1/aulas")
                 .WithTags("Aulas")
-                .MapEndpoint<CreateAulaEndpoint>()
+                .MapEndpoint<AgendarAulaEndpoint>()
                 .MapEndpoint<UpdateAulaEndpoint>()
                 .MapEndpoint<DeleteAulaEndpoint>()
                 .MapEndpoint<GetAulaByIdEndpoint>()
                 .MapEndpoint<GetAllAulasEndpoint>();
+
+            endpoints.MapGroup("/v1/alunos")
+               .WithTags("Alunos")
+               .MapEndpoint<CreateAlunoEndpoint>()
+               .MapEndpoint<UpdateAlunoEndpoint>()
+               .MapEndpoint<DeleteAlunoEndpoint>()
+               .MapEndpoint<GetAlunoByIdEndpoint>()
+               .MapEndpoint<GetAllAlunosEndpoint>();
+
+            endpoints.MapGroup("/v1/caixa")
+               .WithTags("Caixa")
+               .MapEndpoint<AbrirCaixaEndpoint>()
+               .MapEndpoint<UpdateCaixaEndpoint>();
+
+            endpoints.MapGroup("/v1/atendentes")
+            .WithTags("Atendentes")
+               .MapEndpoint<CreateAtendenteEndpoint>()
+               .MapEndpoint<UpdateAtendenteEndpoint>()
+               .MapEndpoint<GetAtendenteByIdEndpoint>()
+               .MapEndpoint<GetAllAtendentesEndpoint>()
+               .MapEndpoint<DeleteAtendenteEndpoint>();
         }
 
         private static IEndpointRouteBuilder MapEndpoint<TEndpoint>(this IEndpointRouteBuilder app)

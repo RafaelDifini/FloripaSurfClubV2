@@ -12,8 +12,8 @@ namespace FloripaSurfClubAPI.Endpoints.Clientes
         public static void Map(IEndpointRouteBuilder app)
             => app.MapPut("/{id}", HandleAsync)
                 .WithName("UpdateCliente")
-                .WithSummary("Updates an existing client")
-                .WithDescription("Updates an existing client")
+                .WithSummary("Atualiza um cliente existente")
+                .WithDescription("Atualiza um cliente existente")
                 .Produces<Response<Cliente>>(StatusCodes.Status200OK)
                 .Produces(StatusCodes.Status404NotFound)
                 .Produces(StatusCodes.Status500InternalServerError);

@@ -12,8 +12,8 @@ namespace FloripaSurfClubAPI.Endpoints.Professores
         public static void Map(IEndpointRouteBuilder app)
             => app.MapGet("/", HandleAsync)
                 .WithName("GetProfessors")
-                .WithSummary("Gets all professors")
-                .WithDescription("Gets all professors")
+                .WithSummary("Obtém todos professores")
+                .WithDescription("Obtém todos professores")
                 .Produces<Response<List<Professor>>>(StatusCodes.Status200OK)
                 .Produces(StatusCodes.Status500InternalServerError);
 

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FloripaSurfClubCore.Requests.Cliente
 {
-    public class GetClienteByIdRequest
+    public class GetClienteByIdRequest 
     {
         public Guid Id { get; set; }
     }

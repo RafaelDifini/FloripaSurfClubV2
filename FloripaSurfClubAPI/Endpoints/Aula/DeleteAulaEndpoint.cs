@@ -11,8 +11,8 @@ namespace FloripaSurfClubAPI.Endpoints.Aulas
         public static void Map(IEndpointRouteBuilder app)
             => app.MapDelete("/{id}", HandleAsync)
                 .WithName("DeleteAula")
-                .WithSummary("Deletes an existing class")
-                .WithDescription("Deletes an existing class")
+                .WithSummary("Deletes uma aula existente")
+                .WithDescription("Deletes uma aula existente")
                 .Produces(StatusCodes.Status200OK)
                 .Produces(StatusCodes.Status404NotFound)
                 .Produces(StatusCodes.Status500InternalServerError);

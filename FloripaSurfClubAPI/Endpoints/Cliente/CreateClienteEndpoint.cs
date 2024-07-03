@@ -12,8 +12,8 @@ namespace FloripaSurfClubAPI.Endpoints.Clientes
         public static void Map(IEndpointRouteBuilder app)
             => app.MapPost("/", HandleAsync)
                 .WithName("CreateCliente")
-                .WithSummary("Creates a new client")
-                .WithDescription("Creates a new client")
+                .WithSummary("Cria um novo cliente")
+                .WithDescription("Cria um novo cliente")
                 .Produces<Response<Cliente>>(StatusCodes.Status201Created)
                 .Produces(StatusCodes.Status500InternalServerError);
 

@@ -12,8 +12,8 @@ namespace FloripaSurfClubAPI.Endpoints.Aulas
         public static void Map(IEndpointRouteBuilder app)
             => app.MapPut("/{id}", HandleAsync)
                 .WithName("UpdateAula")
-                .WithSummary("Updates an existing class")
-                .WithDescription("Updates an existing class")
+                .WithSummary("Atualiza uma aula existente")
+                .WithDescription("Atualiza uma aula existente")
                 .Produces<Response<Aula>>(StatusCodes.Status200OK)
                 .Produces(StatusCodes.Status404NotFound)
                 .Produces(StatusCodes.Status500InternalServerError);

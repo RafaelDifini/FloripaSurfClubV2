@@ -1,8 +1,8 @@
 ﻿using FloripaSurfClubAPI.Extensions;
 using FloripaSurfClubCore.Handlers;
-using FloripaSurfClubCore.Models;
 using FloripaSurfClubCore.Requests.Aula;
 using FloripaSurfClubCore.Responses;
+using FloripaSurfClubCore.Responses.Aulas;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FloripaSurfClubAPI.Endpoints.Aulas
@@ -12,9 +12,9 @@ namespace FloripaSurfClubAPI.Endpoints.Aulas
         public static void Map(IEndpointRouteBuilder app)
             => app.MapGet("/", HandleAsync)
                 .WithName("GetAllAulas")
-                .WithSummary("Gets all classes")
-                .WithDescription("Gets all classes")
-                .Produces<Response<List<Aula>>>(StatusCodes.Status200OK)
+                .WithSummary("Obtém todas aulas")
+                .WithDescription("Obtém todas aulas")
+                .Produces<Response<List<AulaResponse>>>(StatusCodes.Status200OK)
                 .Produces(StatusCodes.Status500InternalServerError);
 
         private static async Task<IResult> HandleAsync(

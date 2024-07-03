@@ -12,8 +12,8 @@ namespace FloripaSurfClubAPI.Endpoints.Professores
         public static void Map(IEndpointRouteBuilder app)
             => app.MapPost("/", HandleAsync)
                 .WithName("CreateProfessor")
-                .WithSummary("Creates a new professor")
-                .WithDescription("Creates a new professor")
+                .WithSummary("Cria um novo professor")
+                .WithDescription("Cria um novo professor")
                 .Produces<Response<Professor>>(StatusCodes.Status201Created)
                 .Produces(StatusCodes.Status500InternalServerError);
 

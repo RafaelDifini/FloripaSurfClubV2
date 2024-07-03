@@ -117,7 +117,7 @@ namespace FloripaSurfClubAPI.Handlers
 
                     await _context.SaveChangesAsync();
 
-                    return new Response<string>("User registered successfully", 201, "User created successfully.");
+                    return new Response<string>("User registered successfully", 201, $"Id do usuário: {usuario.Id}");
                 }
 
                 return new Response<string>(null, 400, "User registration failed.");

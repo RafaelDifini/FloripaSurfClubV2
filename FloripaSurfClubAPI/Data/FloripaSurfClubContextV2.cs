@@ -4,15 +4,16 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using FloripaSurfClubAPI.Models;
 using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.Extensions.Configuration;
+using System;
+using System.IO;
 
 namespace FloripaSurfClubCore.Data
 {
-    public class FloripaSurfClubContextV2 : IdentityDbContext<UsuarioSistema, IdentityRole<Guid>, Guid> , IDesignTimeDbContextFactory<FloripaSurfClubContextV2>
+    public class FloripaSurfClubContextV2 : IdentityDbContext<UsuarioSistema, IdentityRole<Guid>, Guid>
     {
-        internal FloripaSurfClubContextV2() { }
-
         public FloripaSurfClubContextV2(DbContextOptions<FloripaSurfClubContextV2> options)
-        : base(options)
+            : base(options)
         {
         }
 
@@ -51,6 +52,10 @@ namespace FloripaSurfClubCore.Data
                     j => j.HasOne<Aluno>().WithMany().HasForeignKey("AlunoId"),
                     j => j.HasOne<Aula>().WithMany().HasForeignKey("AulaId"));
 
+            modelBuilder.Entity<Aula>()
+             .Property(a => a.DataInicio)
+             .HasColumnType("timestamptz");
+
             modelBuilder.Entity<Aluguel>()
                 .HasOne(a => a.Equipamento)
                 .WithMany()
@@ -63,18 +68,17 @@ namespace FloripaSurfClubCore.Data
                 .HasForeignKey(a => a.ClienteId)
                 .OnDelete(DeleteBehavior.Restrict);
         }
+    }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            base.OnConfiguring(optionsBuilder);
-        }
-
+    public class FloripaSurfClubContextV2Factory : IDesignTimeDbContextFactory<FloripaSurfClubContextV2>
+    {
         public FloripaSurfClubContextV2 CreateDbContext(string[] args)
         {
             var basePath = Directory.GetCurrentDirectory();
             var configuration = new ConfigurationBuilder()
                 .SetBasePath(basePath)
                 .AddJsonFile("appsettings.json")
+                .AddUserSecrets<Program>()
                 .Build();
 
             var optionsBuilder = new DbContextOptionsBuilder<FloripaSurfClubContextV2>();
