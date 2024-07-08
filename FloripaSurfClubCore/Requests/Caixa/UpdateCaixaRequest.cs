@@ -9,7 +9,7 @@ namespace FloripaSurfClubCore.Requests.Caixa
     public class UpdateCaixaRequest
     {
         public Guid Id { get; set; }
-        public DateTime DataFechamento { get; set; }
+        public DateTime? DataFechamento { get; set; } = null;
         public decimal ValorTotal { get; set; }
         public decimal ValorColaboradores { get; set; }
 

@@ -62,6 +62,29 @@ namespace FloripaSurfClubAPI.Handlers
             {
                 return new Response<Caixa?>(null, 500, $"Não foi possível atualizar o caixa: {ex.Message}");
             }
+            
+        }
+
+        public async Task<Response<Caixa>> GetCaixaByIdAsync(GetCaixaByIdRequest request)
+        {
+            try
+            {
+                var caixa = await _context.Caixa.FirstOrDefaultAsync(x => x.Id == request.Id);
+
+                if(caixa == null)
+                {
+                    return new Response<Caixa>(null, 404, "Caixa não encontrado");
+                }
+                else
+                {
+                    return new Response<Caixa>(caixa, 200, "Caixa encontrado!");
+                }
+            }
+            catch (Exception ex)
+            {
+                return new Response<Caixa>(null, 500, $"Não foi possível trazer o caixa: {ex.Message}");
+            }
+
         }
     }
 }

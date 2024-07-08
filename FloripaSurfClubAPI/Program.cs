@@ -14,10 +14,12 @@ builder.AddCrossOrigin();
 builder.AddDocumentation();
 builder.AddServices();
 builder.AddSecrets();
+builder.AddSecurity();
 
 var app = builder.Build();
 
 app.UseCors(ApiConfiguration.CorsPolicyName);
 app.ConfigureDevEnvironment();
 app.MapEndpoints();
+app.UseSecurity();
 app.Run();

@@ -59,6 +59,7 @@ namespace FloripaSurfClubAPI.Extensions
 
             endpoints.MapGroup("/v1/caixa")
                .WithTags("Caixa")
+               .MapEndpoint<GetCaixaByIdEndepoint>()
                .MapEndpoint<AbrirCaixaEndpoint>()
                .MapEndpoint<UpdateCaixaEndpoint>();
 

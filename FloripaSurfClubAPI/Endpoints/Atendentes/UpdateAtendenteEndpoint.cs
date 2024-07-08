@@ -10,7 +10,7 @@ namespace FloripaSurfClubAPI.Endpoints.Atendente
     public class UpdateAtendenteEndpoint : IEndpoint
     {
         public static void Map(IEndpointRouteBuilder app)
-            => app.MapPut("/{usuarioSistemaId}", HandleAsync)
+            => app.MapPut("/", HandleAsync)
                 .WithName("UpdateAtendente")
                 .WithSummary("Atualiza um atendente existente")
                 .WithDescription("Atualiza um atendente existente")
@@ -20,10 +20,8 @@ namespace FloripaSurfClubAPI.Endpoints.Atendente
 
         private static async Task<IResult> HandleAsync(
             [FromServices] IAtendenteHandler handler,
-            [FromRoute] Guid usuarioSistemaId,
             [FromBody] UpdateAtendenteRequest request)
         {
-            request.UsuarioSistemaId = usuarioSistemaId;
             var response = await handler.UpdateAsync(request);
             return response.IsSuccess
                 ? TypedResults.Ok(response)

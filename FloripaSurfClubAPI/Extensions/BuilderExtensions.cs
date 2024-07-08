@@ -5,6 +5,7 @@ using FloripaSurfClubCore.Data;
 using FloripaSurfClubCore.Handlers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Globalization;
 using System.Text.Json.Serialization;
 
@@ -28,6 +29,16 @@ namespace FloripaSurfClubAPI.Extensions
             });
         }
 
+
+        public static void AddSecurity(this WebApplicationBuilder builder)
+        {
+            builder.Services
+           .AddAuthentication(IdentityConstants.ApplicationScheme)
+           .AddIdentityCookies();
+
+            builder.Services.AddAuthorization();
+        }
+
         public static void AddDataContexts(this WebApplicationBuilder builder)
         {
             var cultureInfo = new CultureInfo("pt-BR");
@@ -43,9 +54,11 @@ namespace FloripaSurfClubAPI.Extensions
                 options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             // Configurar Identity
-            builder.Services.AddIdentity<UsuarioSistema, IdentityRole<Guid>>()
-                .AddEntityFrameworkStores<FloripaSurfClubContextV2>()
-                .AddDefaultTokenProviders();
+            builder.Services
+              .AddIdentityCore<UsuarioSistema>()
+              .AddRoles<IdentityRole<Guid>>()
+              .AddEntityFrameworkStores<FloripaSurfClubContextV2>()
+              .AddApiEndpoints();
 
             builder.Services.ConfigureApplicationCookie(options =>
             {
@@ -86,6 +99,7 @@ namespace FloripaSurfClubAPI.Extensions
             builder.Services.AddScoped<IAccountHandler, AccountHandler>();
             builder.Services.AddScoped<IAlunoHandler, AlunoHandler>();
             builder.Services.AddScoped<IAtendenteHandler, AtendenteHandler>();
+            builder.Services.AddScoped<ICaixaHandler, CaixaHandler>();
 
         }
 

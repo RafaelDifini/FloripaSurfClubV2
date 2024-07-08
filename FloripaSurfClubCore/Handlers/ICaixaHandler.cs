@@ -14,5 +14,7 @@ namespace FloripaSurfClubCore.Handlers
     {
         Task<Response<Caixa>> AbrirCaixaAsync(AbrirCaixaRequest request);
         Task<Response<Caixa?>> UpdateAsync(UpdateCaixaRequest request);
+        Task<Response<Caixa>> GetCaixaByIdAsync(GetCaixaByIdRequest request);
+
     }
 }
