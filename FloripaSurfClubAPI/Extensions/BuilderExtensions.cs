@@ -58,7 +58,12 @@ namespace FloripaSurfClubAPI.Extensions
               .AddIdentityCore<UsuarioSistema>()
               .AddRoles<IdentityRole<Guid>>()
               .AddEntityFrameworkStores<FloripaSurfClubContextV2>()
-              .AddApiEndpoints();
+            .AddApiEndpoints();
+
+            //builder.Services.AddIdentity<UsuarioSistema, IdentityRole<Guid>>()
+            // .AddEntityFrameworkStores<FloripaSurfClubContextV2>()
+            // .AddDefaultTokenProviders();
+
 
             builder.Services.ConfigureApplicationCookie(options =>
             {

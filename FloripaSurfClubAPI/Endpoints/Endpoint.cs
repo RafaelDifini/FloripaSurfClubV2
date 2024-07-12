@@ -5,6 +5,7 @@ using FloripaSurfClubAPI.Endpoints.Aulas;
 using FloripaSurfClubAPI.Endpoints.Caixa;
 using FloripaSurfClubAPI.Endpoints.Clientes;
 using FloripaSurfClubAPI.Endpoints.Professores;
+using FloripaSurfClubAPI.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 
@@ -26,8 +27,14 @@ namespace FloripaSurfClubAPI.Extensions
                 .MapEndpoint<LoginUserEndpoint>()
                 .MapEndpoint<LogoutEndpoint>();
 
+            //endpoints.MapGroup("v1/identity")
+            //    .WithTags("Identity")
+            //    .MapIdentityApi<UsuarioSistema>();
+
+
             endpoints.MapGroup("/v1/professores")
                 .WithTags("Professores")
+                .RequireAuthorization()
                 .MapEndpoint<CreateProfessorEndpoint>()
                 .MapEndpoint<UpdateProfessorEndpoint>()
                 .MapEndpoint<DeleteProfessorEndpoint>()
@@ -36,6 +43,7 @@ namespace FloripaSurfClubAPI.Extensions
 
             endpoints.MapGroup("/v1/clientes")
                .WithTags("Clientes")
+               .RequireAuthorization()
                .MapEndpoint<CreateClienteEndpoint>()
                .MapEndpoint<UpdateClienteEndpoint>()
                .MapEndpoint<GetClienteByIdEndpoint>()
@@ -43,6 +51,7 @@ namespace FloripaSurfClubAPI.Extensions
 
             endpoints.MapGroup("/v1/aulas")
                 .WithTags("Aulas")
+                .RequireAuthorization()
                 .MapEndpoint<AgendarAulaEndpoint>()
                 .MapEndpoint<UpdateAulaEndpoint>()
                 .MapEndpoint<DeleteAulaEndpoint>()
@@ -51,6 +60,7 @@ namespace FloripaSurfClubAPI.Extensions
 
             endpoints.MapGroup("/v1/alunos")
                .WithTags("Alunos")
+               .RequireAuthorization()
                .MapEndpoint<CreateAlunoEndpoint>()
                .MapEndpoint<UpdateAlunoEndpoint>()
                .MapEndpoint<DeleteAlunoEndpoint>()
@@ -59,12 +69,14 @@ namespace FloripaSurfClubAPI.Extensions
 
             endpoints.MapGroup("/v1/caixa")
                .WithTags("Caixa")
+               .RequireAuthorization()
                .MapEndpoint<GetCaixaByIdEndepoint>()
                .MapEndpoint<AbrirCaixaEndpoint>()
                .MapEndpoint<UpdateCaixaEndpoint>();
 
             endpoints.MapGroup("/v1/atendentes")
-            .WithTags("Atendentes")
+                .WithTags("Atendentes")
+                .RequireAuthorization()
                .MapEndpoint<CreateAtendenteEndpoint>()
                .MapEndpoint<UpdateAtendenteEndpoint>()
                .MapEndpoint<GetAtendenteByIdEndpoint>()

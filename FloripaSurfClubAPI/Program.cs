@@ -9,17 +9,18 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddConfiguration();
+builder.AddSecurity();
 builder.AddDataContexts();
 builder.AddCrossOrigin();
 builder.AddDocumentation();
 builder.AddServices();
 builder.AddSecrets();
-builder.AddSecurity();
 
 var app = builder.Build();
 
+if (app.Environment.IsDevelopment())
+    app.ConfigureDevEnvironment();
 app.UseCors(ApiConfiguration.CorsPolicyName);
-app.ConfigureDevEnvironment();
-app.MapEndpoints();
 app.UseSecurity();
+app.MapEndpoints();
 app.Run();

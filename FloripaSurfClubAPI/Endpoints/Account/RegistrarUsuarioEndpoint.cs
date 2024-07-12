@@ -18,7 +18,8 @@ namespace FloripaSurfClubAPI.Endpoints.Account
                 .WithDescription("Registra um novo usuário\"")
                 .Produces<Response<UsuarioSistema>>(StatusCodes.Status201Created)
                 .Produces(StatusCodes.Status400BadRequest)
-                .Produces(StatusCodes.Status500InternalServerError);
+                .Produces(StatusCodes.Status500InternalServerError)
+                .RequireAuthorization();
 
         private static async Task<IResult> HandleAsync(
             [FromServices] IAccountHandler handler,

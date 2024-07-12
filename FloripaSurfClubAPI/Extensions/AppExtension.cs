@@ -1,4 +1,6 @@
 ﻿
+using FloripaSurfClubAPI.Models;
+
 namespace FloripaSurfClubAPI.Extensions
 {
     public static class AppExtension
@@ -9,8 +11,9 @@ namespace FloripaSurfClubAPI.Extensions
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "API V1");
-                c.RoutePrefix = string.Empty; // Define Swagger como a página inicial
+                c.RoutePrefix = string.Empty;
             });
+            app.MapSwagger().RequireAuthorization();
         }
 
         public static void UseSecurity(this WebApplication app)
