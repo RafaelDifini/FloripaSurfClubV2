@@ -1,5 +1,5 @@
 ﻿using FloripaSurfClubAPI.Extensions;
-using FloripaSurfClubAPI.Models;
+using FloripaSurfClubAPI.Models.Account;
 using FloripaSurfClubCore.Handlers;
 using FloripaSurfClubCore.Requests.Account;
 using FloripaSurfClubCore.Responses;
@@ -18,8 +18,7 @@ namespace FloripaSurfClubAPI.Endpoints.Account
                 .WithDescription("Registra um novo usuário\"")
                 .Produces<Response<UsuarioSistema>>(StatusCodes.Status201Created)
                 .Produces(StatusCodes.Status400BadRequest)
-                .Produces(StatusCodes.Status500InternalServerError)
-                .RequireAuthorization();
+                .Produces(StatusCodes.Status500InternalServerError);
 
         private static async Task<IResult> HandleAsync(
             [FromServices] IAccountHandler handler,

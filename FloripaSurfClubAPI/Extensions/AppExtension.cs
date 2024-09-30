@@ -13,7 +13,7 @@ namespace FloripaSurfClubAPI.Extensions
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "API V1");
                 c.RoutePrefix = string.Empty;
             });
-            app.MapSwagger().RequireAuthorization();
+            app.MapSwagger();
         }
 
         public static void UseSecurity(this WebApplication app)

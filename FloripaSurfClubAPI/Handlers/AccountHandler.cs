@@ -1,4 +1,4 @@
-﻿using FloripaSurfClubAPI.Models;
+﻿using FloripaSurfClubAPI.Models.Account;
 using FloripaSurfClubCore.Data;
 using FloripaSurfClubCore.Enums;
 using FloripaSurfClubCore.Handlers;

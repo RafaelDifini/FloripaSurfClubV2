@@ -1,5 +1,5 @@
 ﻿using FloripaSurfClubAPI.Handlers;
-using FloripaSurfClubAPI.Models;
+using FloripaSurfClubAPI.Models.Account;
 using FloripaSurfClubCore;
 using FloripaSurfClubCore.Data;
 using FloripaSurfClubCore.Handlers;
@@ -71,7 +71,22 @@ namespace FloripaSurfClubAPI.Extensions
                 options.ExpireTimeSpan = TimeSpan.FromHours(6);
                 options.LoginPath = "/Account/Login";
                 options.SlidingExpiration = true;
+
+                options.Events.OnRedirectToLogin = context =>
+                {
+                    context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+
+                    var jsonResponse = new
+                    {
+                        message = "Você não está autenticado. Faça login para continuar."
+                    };
+
+                    // Escreve a resposta JSON
+                    context.Response.ContentType = "application/json";
+                    return context.Response.WriteAsJsonAsync(jsonResponse);
+                };
             });
+
 
             builder.Services.AddControllers().AddJsonOptions(options =>
             {

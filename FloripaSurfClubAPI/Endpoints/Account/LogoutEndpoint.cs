@@ -1,5 +1,5 @@
 ﻿using FloripaSurfClubAPI.Extensions;
-using FloripaSurfClubAPI.Models;
+using FloripaSurfClubAPI.Models.Account;
 using Microsoft.AspNetCore.Identity;
 
 namespace FloripaSurfClubAPI.Endpoints.Account

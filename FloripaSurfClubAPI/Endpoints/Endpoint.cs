@@ -4,8 +4,11 @@ using FloripaSurfClubAPI.Endpoints.Atendente;
 using FloripaSurfClubAPI.Endpoints.Aulas;
 using FloripaSurfClubAPI.Endpoints.Caixa;
 using FloripaSurfClubAPI.Endpoints.Clientes;
+using FloripaSurfClubAPI.Endpoints.Identity;
 using FloripaSurfClubAPI.Endpoints.Professores;
 using FloripaSurfClubAPI.Models;
+using FloripaSurfClubAPI.Models.Account;
+using FloripaSurfClubCore.Models.Account;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 
@@ -27,9 +30,10 @@ namespace FloripaSurfClubAPI.Extensions
                 .MapEndpoint<LoginUserEndpoint>()
                 .MapEndpoint<LogoutEndpoint>();
 
-            //endpoints.MapGroup("v1/identity")
-            //    .WithTags("Identity")
-            //    .MapIdentityApi<UsuarioSistema>();
+            endpoints.MapGroup("v1/identity")
+                .WithTags("Identity")
+                .MapEndpoint<GetRolesEndpoint>()
+                .MapIdentityApi<Models.Account.UsuarioSistema>();
 
 
             endpoints.MapGroup("/v1/professores")

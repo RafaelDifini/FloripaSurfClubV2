@@ -2,11 +2,11 @@
 using FloripaSurfClubCore.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using FloripaSurfClubAPI.Models;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.IO;
+using FloripaSurfClubAPI.Models.Account;
 
 namespace FloripaSurfClubCore.Data
 {
