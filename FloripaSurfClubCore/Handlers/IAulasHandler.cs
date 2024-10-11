@@ -14,8 +14,8 @@ namespace FloripaSurfClubCore.Handlers
     public interface IAulasHandler
     {
         Task<Response<Aula>> AgendarAulaAsync(CreateAulaRequest request);
-        Task<Response<Aula?>> UpdateAsync(UpdateAulaRequest request);
-        Task<Response<Aula?>> DeleteAsync(DeleteAulaRequest request);
+        Task<Response<Aula>> UpdateAsync(UpdateAulaRequest request);
+        Task<Response<Aula>> DeleteAsync(DeleteAulaRequest request);
         Task<Response<AulaResponse?>> GetByIdAsync(GetAulaByIdRequest request);
         Task<Response<List<AulaResponse>>> GetAllAsync(GetAllAulasRequest request);
     }

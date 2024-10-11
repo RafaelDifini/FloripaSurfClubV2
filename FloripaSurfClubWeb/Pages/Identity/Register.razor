@@ -1,6 +1,7 @@
 ﻿@page "/registrar"
 @using System.ComponentModel.DataAnnotations
 @layout Headless
+@inherits RegisterPage
 
 <PageTitle>Registrar</PageTitle>
 
@@ -11,34 +12,72 @@
                 <img src="imgs/logo.png" alt="Floripa Surf Club - Agendamento" />
             </div>
 
-            <MudForm @ref="_mudForm">
+            <EditForm Model="@InputModel" OnValidSubmit="OnValidSubmitAsync">
+                <DataAnnotationsValidator />
+                @* <ValidationSummary /> *@
+
+
+                <MudTextField T="string"
+                              Label="Nome"
+                              HelperText="Campo obrigatório"
+                              InputType="InputType.Text"
+                              For="@(() => InputModel.Nome)"
+                              @bind-Value="InputModel.Nome" />
+
                 <MudTextField T="string"
                               Label="E-mail"
+                              HelperText="Campo obrigatório"
                               InputType="InputType.Email"
-                              Required="true"
-                              RequiredError="Informe o E-mail"
-                              Validation="@(new EmailAddressAttribute{ErrorMessage="E-mail inválido"})" />
+                              For="@(() => InputModel.Email)"
+                              @bind-Value="InputModel.Email" />
 
                 <MudTextField T="string"
                               Label="Senha"
                               InputType="InputType.Password"
-                              Required="true"
-                              RequiredError="Senha inválida" />
+                              HelperText="Campo obrigatório"
+                              For="@(() => InputModel.Senha)"
+                              @bind-Value="InputModel.Senha" />
 
-            </MudForm>
 
-            <div class="d-flex mt-8">
-                <MudButton Variant="Variant.Filled" Color="Color.Primary">COMEÇAR</MudButton>
-                <MudSpacer />
-                <MudButton Href="/login" Variant="Variant.Filled" Color="Color.Primary">JA TENHO UMA CONTA</MudButton>
-            </div>
+                <MudTextField T="string"
+                              Label="Confirmar Senha"
+                              InputType="InputType.Password"
+                              HelperText="Campo obrigatório"
+                              For="@(() => InputModel.ConfirmaSenha)"
+                              @bind-Value="InputModel.ConfirmaSenha" />
+
+
+                <MudTextField T="string"
+                              HelperText="Campo obrigatório"
+                              Label="Telefone"
+                              InputType="InputType.Number"
+                              For="@(() => InputModel.Telefone)"
+                              @bind-Value="InputModel.Telefone" />
+
+
+                <MudSelect @bind-Value="InputModel.TipoUsuario" Label="Selecione o tipo de usuário" HelperText="Selecione" Placeholder="Por favor selecione" AdornmentIcon="@Icons.Material.Filled.Person" AdornmentColor="Color.Primary">
+                    @foreach (var tipoUsuario in InputModel.TipoUsuarios)
+                    {
+                        <MudSelectItem Value="@tipoUsuario">@tipoUsuario</MudSelectItem>
+                    }
+                </MudSelect>
+
+
+                <div class="d-flex mt-8">
+                  @if(IsBusy)
+                    {
+                        <MudProgressCircular Color="Color.Info" Indeterminate="true"/>
+                    }
+                    else
+                    {
+                        <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary">COMEÇAR</MudButton>
+                        <MudSpacer />
+                        <MudButton Href="/login" Variant="Variant.Filled" Color="Color.Primary">JA TENHO UMA CONTA</MudButton>
+                    }
+                </div>
+            </EditForm>
         </MudPaper>
     </MudItem>
 </MudGrid>
 
 
-@code {
-
-    MudForm? _mudForm;
-
-}
