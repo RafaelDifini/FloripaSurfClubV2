@@ -125,5 +125,6 @@ namespace FloripaSurfClubAPI.Handlers
                 return new Response<List<Aluno>>(null, 500, $"Não foi possível recuperar os alunos: {ex.Message}");
             }
         }
+
     }
 }

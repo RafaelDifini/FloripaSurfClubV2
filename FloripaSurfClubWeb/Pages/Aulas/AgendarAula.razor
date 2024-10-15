@@ -1,0 +1,46 @@
+﻿@page "/agendamento"
+@using FloripaSurfClubCore.Models
+@using FloripaSurfClubCore.Requests.Alunos
+@using FloripaSurfClubCore.Requests.Professor
+@inherits AgendarAulaPage
+
+<MudText Typo="Typo.h3">Agendar Aula</MudText>
+
+<MudPaper Class="pa-6 mt-4">
+    <EditForm Model="InputModel" OnValidSubmit="OnValidSubmitAsync">
+        <DataAnnotationsValidator />
+
+        <MudSelect T="Guid" Value="InputModel.ProfessorId" ValueChanged="OnProfessorChanged" Label="Selecione o Professor">
+            @foreach (var professor in Professores)
+            {
+                <MudSelectItem T="Guid" Value="@professor.Id">@professor.Nome</MudSelectItem>
+            }
+        </MudSelect>
+
+        <MudTextField T="string" Label="Aluno" @bind-Value="AlunoNome" Disabled="true" />
+
+        <MudDatePicker Label="Data da Aula" DateChanged="OnDateChanged" />
+
+        @if (HorarioSelecionado.HasValue)
+        {
+            <MudSelect T="DateTime" ValueChanged="OnHorarioChanged" Label="Horário Disponível" Placeholder="Selecione um horário">
+                @if (HorariosDisponiveis.Any())
+                {
+                    @foreach (var horario in HorariosDisponiveis)
+                    {
+                        <MudSelectItem T="DateTime" Value="@horario">@horario.ToString("HH:mm")</MudSelectItem>
+                    }
+                }
+                else
+                {
+                    <MudText Typo="Typo.body1" Color="Color.Secondary">Nenhum horário disponível</MudText>
+                }
+            </MudSelect>
+        }
+
+        <MudSpacer />
+
+      
+        <MudButton Class="ml-auto" ButtonType="ButtonType.Submit" Color="Color.Success" Disabled="@IsBusy">Agendar Aula</MudButton>
+    </EditForm>
+</MudPaper>

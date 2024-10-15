@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FloripaSurfClubCore.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,7 +18,7 @@ namespace FloripaSurfClubCore.Responses
 
         public Response(
             TData? data,
-            int code = Configuration.DefaultStatusCode,
+            int code,
             string? message = null)
         {
             Data = data;
@@ -31,5 +32,6 @@ namespace FloripaSurfClubCore.Responses
         [JsonIgnore]
         public bool IsSuccess
             => _code is >= 200 and <= 299;
+
     }
 }

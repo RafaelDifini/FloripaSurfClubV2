@@ -33,6 +33,7 @@ namespace FloripaSurfClubAPI.Extensions
             endpoints.MapGroup("v1/identity")
                 .WithTags("Identity")
                 .MapEndpoint<GetRolesEndpoint>()
+                 .MapEndpoint<GetUserInfoEndpoint>()
                 .MapIdentityApi<Models.Account.UsuarioSistema>();
 
 
@@ -57,6 +58,7 @@ namespace FloripaSurfClubAPI.Extensions
                 .WithTags("Aulas")
                 .RequireAuthorization()
                 .MapEndpoint<AgendarAulaEndpoint>()
+                .MapEndpoint<ObterHorariosDisponiveisEndpoint>()
                 .MapEndpoint<UpdateAulaEndpoint>()
                 .MapEndpoint<DeleteAulaEndpoint>()
                 .MapEndpoint<GetAulaByIdEndpoint>()

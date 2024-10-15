@@ -8,6 +8,7 @@ using FloripaSurfClubCore.Responses;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace FloripaSurfClubAPI.Handlers
@@ -32,20 +33,41 @@ namespace FloripaSurfClubAPI.Handlers
         {
             try
             {
-                var result = await _signInManager.PasswordSignInAsync(request.Email, request.Senha, false, false);
+                var user = await _userManager.FindByEmailAsync(request.Email);
+
+                if (user == null)
+                {
+                    return new Response<string>(null, 400, "Usuário ou senha inválidos.");
+                }
+
+                var result = await _signInManager.PasswordSignInAsync(user, request.Senha, false, false);
 
                 if (result.Succeeded)
                 {
-                    return new Response<string>("Login successful", 200, "User logged in successfully.");
+                    var claims = new List<Claim>
+                    {
+                        new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()), // ID do usuário
+                        new Claim(ClaimTypes.Name, user.Nome), // Nome do usuário
+                        new Claim(ClaimTypes.Email, user.Email), // Email do usuário
+                        new Claim(ClaimTypes.MobilePhone, user.PhoneNumber ?? string.Empty) // Telefone do usuário
+                    };
+
+                    var identity = new ClaimsIdentity(claims, "Cookies");
+                    var principal = new ClaimsPrincipal(identity);
+
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+
+                    return new Response<string>("Login realizado com sucesso", 200, "Usuário logado com sucesso.");
                 }
 
-                return new Response<string>(null, 400, "Invalid login attempt.");
+                return new Response<string>(null, 400, "Tentativa de login inválida.");
             }
             catch (Exception ex)
             {
-                return new Response<string>(null, 500, $"An error occurred while logging in: {ex.Message}");
+                return new Response<string>(null, 500, $"Ocorreu um erro ao realizar o login: {ex.Message}");
             }
         }
+
 
         public async Task LogoutAsync()
         {
@@ -125,6 +147,36 @@ namespace FloripaSurfClubAPI.Handlers
             catch (Exception ex)
             {
                 return new Response<string>(null, 500, $"An error occurred while registering the user: {ex.Message}");
+            }
+        }
+
+        public async Task<Response<FloripaSurfClubCore.Models.Account.UsuarioSistema>> GetUserInfoAsync(ClaimsPrincipal claimsPrincipal)
+        {
+            try
+            {
+                // Recupera o usuário pelo Identity
+                var user = await _userManager.GetUserAsync(claimsPrincipal);
+
+                if (user == null)
+                {
+                    return new Response<FloripaSurfClubCore.Models.Account.UsuarioSistema>(null, 404, "Usuário não encontrado.");
+                }
+
+                // Retorna o usuário com as informações necessárias
+                var usuarioSistema = new FloripaSurfClubCore.Models.Account.UsuarioSistema
+                {
+                    Id = user.Id,
+                    Nome = user.Nome,
+                    Email = user.Email,
+                    Telefone = user.PhoneNumber,
+                    TipoUsuario = user.TipoUsuario
+                };
+
+                return new Response<FloripaSurfClubCore.Models.Account.UsuarioSistema>(usuarioSistema, 200, "Informações do usuário recuperadas com sucesso.");
+            }
+            catch (Exception ex)
+            {
+                return new Response<FloripaSurfClubCore.Models.Account.UsuarioSistema>(null, 500, $"Erro ao recuperar as informações do usuário: {ex.Message}");
             }
         }
     }

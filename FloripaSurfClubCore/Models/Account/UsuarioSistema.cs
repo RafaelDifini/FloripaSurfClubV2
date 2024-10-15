@@ -9,8 +9,10 @@ namespace FloripaSurfClubCore.Models.Account
 {
     public class UsuarioSistema
     {
+        public Guid Id { get; set; }
         public string Nome { get; set; }
 
+        public string Telefone { get; set; }
         public string Email { get; set; }
         public bool IsEmailConfirmed { get; set; }
         public ETipoUsuario TipoUsuario { get; set; }

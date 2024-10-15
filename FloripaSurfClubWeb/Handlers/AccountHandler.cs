@@ -1,7 +1,10 @@
 ﻿using FloripaSurfClubCore.Handlers;
+using FloripaSurfClubCore.Models.Account;
+using FloripaSurfClubCore.Requests;
 using FloripaSurfClubCore.Requests.Account;
 using FloripaSurfClubCore.Responses;
 using System.Net.Http.Json;
+using System.Security.Claims;
 using System.Text;
 
 namespace FloripaSurfClubWeb.Handlers
@@ -9,6 +12,23 @@ namespace FloripaSurfClubWeb.Handlers
     public class AccountHandler(IHttpClientFactory httpClientFactory) : IAccountHandler
     {
         private readonly HttpClient _client = httpClientFactory.CreateClient(Configuration.HttpClientName);
+
+        public async Task<Response<UsuarioSistema>> GetUserInfoAsync(ClaimsPrincipal claimsPrincipal)
+        {
+            var result = await _client.PostAsJsonAsync("v1/identity/user-info", claimsPrincipal);
+
+            if (result.IsSuccessStatusCode)
+            {
+                var usuario = await result.Content.ReadFromJsonAsync<UsuarioSistema>();
+
+                return usuario != null
+                    ? new Response<UsuarioSistema>(usuario, 200, "Informações do usuário recuperadas com sucesso")
+                    : new Response<UsuarioSistema>(null, 400, "Não foi possível recuperar as informações do usuário");
+            }
+
+            return new Response<UsuarioSistema>(null, 400, "Não foi possível realizar a requisição.");
+        }
+
 
         public async Task<Response<string>> LoginAsync(LoginRequest request)
         {

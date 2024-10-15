@@ -1,9 +1,11 @@
 ﻿using FloripaSurfClubCore.Handlers;
 using FloripaSurfClubCore.Models;
 using FloripaSurfClubCore.Requests.Aula;
+using FloripaSurfClubCore.Requests.Aulas;
 using FloripaSurfClubCore.Responses;
 using FloripaSurfClubCore.Responses.Aulas;
 using System.Net.Http.Json;
+using System.Text.Json;
 
 namespace FloripaSurfClubWeb.Handlers
 {
@@ -13,9 +15,26 @@ namespace FloripaSurfClubWeb.Handlers
         public async Task<Response<Aula>> AgendarAulaAsync(CreateAulaRequest request)
         {
             var result = await _client.PostAsJsonAsync("/v1/aulas", request);
-            return await result.Content.ReadFromJsonAsync<Response<Aula>>() ??
-                  new Response<Aula>(null, 400, "Falha ao agendar a aula");
+
+            if (result.IsSuccessStatusCode)
+            {
+                var responseData = await result.Content.ReadFromJsonAsync<Response<Aula>>();
+                return responseData ?? new Response<Aula>(null, 500, "Erro ao processar a resposta da API.");
+            }
+            else
+            {
+                var errorContent = await result.Content.ReadFromJsonAsync<Response<Aula>>();
+
+
+                if (errorContent != null && !string.IsNullOrEmpty(errorContent.Message))
+                {
+                    return new Response<Aula>(null, (int)result.StatusCode, errorContent.Message);
+                }
+
+                return new Response<Aula>(null, (int)result.StatusCode, "Falha ao agendar a aula.");
+            }
         }
+
 
         public async Task<Response<Aula>> DeleteAsync(DeleteAulaRequest request)
         {
@@ -35,6 +54,14 @@ namespace FloripaSurfClubWeb.Handlers
             return await _client.GetFromJsonAsync<Response<AulaResponse?>>($"v1/aula/{request.Id}") 
                 ?? new Response<AulaResponse?>(null, 400, "Não foi possível obter a aula");
         }
+
+        public async Task<Response<List<DateTime>>> ObterHorariosDisponiveisAsync(ObterHorariosDisponiveisRequest request)
+        {
+            var result = await _client.PostAsJsonAsync("/v1/aulas/horarios-disponiveis", request);
+            return await result.Content.ReadFromJsonAsync<Response<List<DateTime>>>()
+                   ?? new Response<List<DateTime>>(null, 400, "Falha ao obter horários disponíveis");
+        }
+
 
         public async Task<Response<Aula>> UpdateAsync(UpdateAulaRequest request)
         {

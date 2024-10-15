@@ -4,6 +4,8 @@ using System.Net.Http.Json;
 using System.Reflection.Metadata;
 using System.Security.Claims;
 using System.Linq;
+using System.Text.Json;
+using FloripaSurfClubCore.Responses;
 
 namespace FloripaSurfClubWeb.Security
 {
@@ -41,28 +43,53 @@ namespace FloripaSurfClubWeb.Security
             base.NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
         }
 
-        private async Task<UsuarioSistema> GetUser()
+        private async Task<UsuarioSistema?> GetUser()
         {
             try
             {
-                return await _client.GetFromJsonAsync<UsuarioSistema>("v1/identity/manage/info");
+                var response = await _client.GetAsync("v1/identity/user-info");
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    return null;
+                }
+
+                // Desserializa o JSON para Response<UsuarioSistema>
+                var result = await response.Content.ReadFromJsonAsync<Response<UsuarioSistema>>();
+
+                if (result == null || result.Data == null || string.IsNullOrEmpty(result.Data.Email))
+                {
+                    // Caso algum dado essencial esteja faltando
+                    return null;
+                }
+
+                // Retorna o objeto UsuarioSistema que está dentro de Data
+                return result.Data;
             }
-            catch
+            catch (Exception ex)
             {
+                Console.WriteLine($"Erro ao obter informações do usuário: {ex.Message}");
                 return null;
             }
         }
+
+
+
 
         private async Task<List<Claim>> GetClaimsAsync(UsuarioSistema user)
         {
             var claims = new List<Claim>()
             {
-                new(ClaimTypes.Name,user.Email),
-                new(ClaimTypes.Email,user.Email)
+                new(ClaimTypes.Name, user.Email ?? string.Empty),
+                new(ClaimTypes.Email, user.Email ?? string.Empty), 
+                new(ClaimTypes.NameIdentifier, user.Id.ToString() ?? string.Empty),
+                new(ClaimTypes.MobilePhone, user.Telefone ?? string.Empty), 
+                new("Nome", user.Nome ?? string.Empty) 
             };
 
+            // Adiciona claims extras, verificando se existem
             claims.AddRange(user.Claims.Where(x => x.Key != ClaimTypes.Name && x.Key != ClaimTypes.Email)
-            .Select(x => new Claim(x.Key, x.Value)));
+                .Select(x => new Claim(x.Key, x.Value ?? string.Empty)));  // Garante que Value não é null
 
             RoleClaim[]? roles;
             try
@@ -73,11 +100,14 @@ namespace FloripaSurfClubWeb.Security
             {
                 return claims;
             }
+
             claims.AddRange(from role in roles ?? []
-                            where !string.IsNullOrEmpty(role.Type) || !string.IsNullOrEmpty(role.Value)
+                            where !string.IsNullOrEmpty(role.Type) && !string.IsNullOrEmpty(role.Value)
                             select new Claim(role.Type, role.Value, role.ValueType, role.Issuer, role.OriginalIssuer));
+
             return claims;
         }
+
 
     }
 }

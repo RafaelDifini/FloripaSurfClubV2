@@ -2,6 +2,7 @@
 using FloripaSurfClubCore.Handlers;
 using FloripaSurfClubCore.Models;
 using FloripaSurfClubCore.Requests.Aula;
+using FloripaSurfClubCore.Requests.Aulas;
 using FloripaSurfClubCore.Responses;
 using FloripaSurfClubCore.Responses.Alunos;
 using FloripaSurfClubCore.Responses.Aulas;
@@ -25,7 +26,7 @@ namespace FloripaSurfClubAPI.Handlers
         {
             try
             {
-                var professorDisponivel = await EstaDisponivel(request.ProfessorId, request.DataInicio);
+                var professorDisponivel = await EstaDisponivel(request.ProfessorId, request.DataInicio.Value);
 
                 if (!professorDisponivel)
                 {
@@ -35,7 +36,7 @@ namespace FloripaSurfClubAPI.Handlers
                 var aula = new Aula
                 {
                     ProfessorId = request.ProfessorId,
-                    DataInicio = request.DataInicio,
+                    DataInicio = request.DataInicio.Value,
                     Valor = request.Valor,
                     EhPacote = request.EhPacote,
                     Concluida = request.Concluida
@@ -74,6 +75,9 @@ namespace FloripaSurfClubAPI.Handlers
 
             return !aulaExistente;
         }
+
+      
+
 
         public async Task<Response<Aula?>> UpdateAsync(UpdateAulaRequest request)
         {
@@ -213,5 +217,36 @@ namespace FloripaSurfClubAPI.Handlers
                 return new Response<List<AulaResponse>>(null, 500, $"Não foi possível recuperar as aulas: {ex.Message}");
             }
         }
+
+        public async Task<Response<List<DateTime>>> ObterHorariosDisponiveisAsync(ObterHorariosDisponiveisRequest request)
+        {
+            try
+            {
+                var horariosDisponiveis = new List<DateTime>();
+
+                for (int hour = 8; hour <= 17; hour++)
+                {
+                    if (hour == 12)
+                        continue;
+
+                    var dataHora = new DateTime(request.DataSelecionada.Year, request.DataSelecionada.Month, request.DataSelecionada.Day, hour, 0, 0);
+
+                    if (await EstaDisponivel(request.ProfessorId, dataHora))
+                    {
+                        horariosDisponiveis.Add(dataHora); 
+                    }
+                }
+
+                // Retorna os horários disponíveis com sucesso (200 OK)
+                return new Response<List<DateTime>>(horariosDisponiveis, 200, "Horários disponíveis obtidos com sucesso.");
+            }
+            catch (Exception ex)
+            {
+                return new Response<List<DateTime>>(null, 500, $"Erro ao obter os horários: {ex.Message}");
+            }
+        }
+
+
+
     }
 }

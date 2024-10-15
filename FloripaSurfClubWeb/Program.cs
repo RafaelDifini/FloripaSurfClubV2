@@ -6,6 +6,7 @@ using FloripaSurfClubWeb.Security;
 using Microsoft.AspNetCore.Components.Authorization;
 using FloripaSurfClubCore.Handlers;
 using FloripaSurfClubWeb.Handlers;
+using System.Globalization;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
@@ -31,14 +32,17 @@ builder.Services.AddHttpClient(Configuration.HttpClientName, opt =>
 }).AddHttpMessageHandler<CookieHandler>();
 
 #region Handlers
-builder.Services.AddTransient<IAccountHandler,AccountHandler>();
-builder.Services.AddTransient<IAlunoHandler, AlunoHandler>();
-builder.Services.AddTransient<IAtendenteHandler, AtendenteHandler>();
-builder.Services.AddTransient<IAulasHandler, AulasHandler>();
-builder.Services.AddTransient<ICaixaHandler, CaixaHandler>();
-builder.Services.AddTransient<IClienteHandler, ClienteHandler>();
-builder.Services.AddTransient<IProfessorHandler, ProfessorHandler>();
+builder.Services.AddScoped<IAccountHandler,AccountHandler>();
+builder.Services.AddScoped<IAlunoHandler, AlunoHandler>();
+builder.Services.AddScoped<IAtendenteHandler, AtendenteHandler>();
+builder.Services.AddScoped<IAulasHandler, AulasHandler>();
+builder.Services.AddScoped<ICaixaHandler, CaixaHandler>();
+builder.Services.AddScoped<IClienteHandler, ClienteHandler>();
+builder.Services.AddScoped<IProfessorHandler, ProfessorHandler>();
 #endregion
+
+CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("pt-BR");
+CultureInfo.DefaultThreadCurrentUICulture = new CultureInfo("pr-BR");
 
 await builder.Build().RunAsync();
 

@@ -1,5 +1,6 @@
 ﻿using FloripaSurfClubCore.Models;
 using FloripaSurfClubCore.Requests.Aula;
+using FloripaSurfClubCore.Requests.Aulas;
 using FloripaSurfClubCore.Requests.Professor;
 using FloripaSurfClubCore.Responses;
 using FloripaSurfClubCore.Responses.Aulas;
@@ -18,5 +19,7 @@ namespace FloripaSurfClubCore.Handlers
         Task<Response<Aula>> DeleteAsync(DeleteAulaRequest request);
         Task<Response<AulaResponse?>> GetByIdAsync(GetAulaByIdRequest request);
         Task<Response<List<AulaResponse>>> GetAllAsync(GetAllAulasRequest request);
+
+        Task<Response<List<DateTime>>> ObterHorariosDisponiveisAsync(ObterHorariosDisponiveisRequest request);
     }
 }
